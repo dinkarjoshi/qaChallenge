@@ -1,5 +1,5 @@
 # READ ME (please) 
-message/ instructions to the evaluator
+message to the evaluator
 
 qaChallenge
 QA challenge to demonstrate Automatino and qA knowledge
