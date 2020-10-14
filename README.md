@@ -1,4 +1,6 @@
-# READ ME 
+# READ ME (please) 
+message/ instructions to the evaluator
+
 qaChallenge
 QA challenge to demonstrate Automatino and qA knowledge
 1) ui_test
