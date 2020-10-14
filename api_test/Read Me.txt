@@ -1,1 +1,3 @@
 
+run the 
+GetPost.feature file to start the test execution
