@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <listeners>
+        <listener class-name="com.myStore.selenium.initialize.ExtentTestNGITestListener"></listener>
+    </listeners>
+    <test verbose="2" preserve-order="true" name="C:/Users/DJ/REST_Understanding/myStore">
+        <classes>
+            <class name="com.myStore.selenium.initialize.testCases.VerifyBasics_TC01"></class>
+            <class name="com.myStore.selenium.initialize.testCases.CreateUser_TC02"></class>
+            <class name="com.myStore.selenium.initialize.testCases.SignInUser_TC003"></class>
+            <class name="com.myStore.selenium.initialize.testCases.SearchProducts_TC004"></class>
+            <class name="com.myStore.selenium.initialize.testCases.SelectProduct_TC005"></class>
+            <class name="com.myStore.selenium.initialize.testCases.AddProductToCart_TC006"></class>
+            <class name="com.myStore.selenium.initialize.testCases.LogoImageComparison_TC_007"></class>
+        </classes>
+    </test>
+</suite>
