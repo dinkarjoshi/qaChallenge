@@ -5,10 +5,14 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.Assert;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,14 +35,34 @@ public class GetPostSteps {
 
     }
 
+    private List<String> getList(String key) {
+        List<String> list = new ArrayList<>();
+        try {
+            var jsonString = response.getBody().asString();
+            JSONParser jsonParser = new JSONParser();
+            JSONArray jsonArray = (JSONArray) jsonParser.parse(jsonString);
+
+            jsonArray.forEach(a -> {
+
+                System.out.println(((JSONObject) a).get(key));
+                ;
+                System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                list.add(((JSONObject) a).get(key).toString());
+
+            });
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
     @And("all emails should be valid")
     public void allEmailsShouldBeValid() {
-        ArrayList<String> list;
+        List<String> list;
         Pattern validEmail =
                 Pattern.compile("[a-zA-Z0-9][a-zA-Z0-9_.]*@[a-zA-Z0-9]+([.][a-zA-Z]+)+");
-        String string1 = response.then().extract().path("email").toString();
-        list = cleanResponse(string1);
+        list = getList("email");
 
         for (String emails : list) {
             Matcher matcher = validEmail.matcher(emails);
@@ -63,30 +87,19 @@ public class GetPostSteps {
 
     @And("Company Catchphrases must have less than {int} characters")
     public void companyCatchphrasesMustHaveLessThanCharacters(int arg) {
-        ArrayList<String> list;
-        String string1 = response.then().extract().path("email").toString();
+        List<String> list;
+        list = getList("company");
+        list.forEach(c -> {
+            JSONParser parser = new JSONParser();
+            try {
+                JSONObject jsonObject = (JSONObject) parser.parse(c);
+                Assert.assertTrue(jsonObject.get("catchPhrase").toString().length() < 50);
 
-        String catchPhrases = response.then().extract().path("company.catchPhrase").toString();
-        list = cleanResponse(catchPhrases);
-        list.forEach(c -> Assert.assertTrue(c.length() < 50));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
-    private ArrayList<String> cleanResponse(String string1) {
-        StringBuilder stringBuilder = new StringBuilder();
-        ArrayList<String> list = new ArrayList<>();
-        for (int x = 0; x < string1.length(); x++) {
-            char c = string1.charAt(x);
-            String compare = Character.toString(c);
-            if (!(compare.equalsIgnoreCase("[") || compare.equalsIgnoreCase("]"))) {
-                stringBuilder.append(string1.charAt(x));
-            }
-            if (compare.equalsIgnoreCase(",")) {
-                String string = stringBuilder.toString().trim();
-                string = string.replace(",", "").trim();
-                list.add(string);
-                stringBuilder.replace(0, stringBuilder.length(), "");
-            }
-        }
-        return list;
-    }
 }
