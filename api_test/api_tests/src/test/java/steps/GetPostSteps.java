@@ -43,12 +43,7 @@ public class GetPostSteps {
             JSONArray jsonArray = (JSONArray) jsonParser.parse(jsonString);
 
             jsonArray.forEach(a -> {
-
-                System.out.println(((JSONObject) a).get(key));
-                ;
-                System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                 list.add(((JSONObject) a).get(key).toString());
-
             });
 
         } catch (ParseException e) {
